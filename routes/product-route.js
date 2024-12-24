@@ -18,4 +18,6 @@ router.put("/products/:id", productController.updateProduct);
 // Delete a product by ID
 router.delete("/products/:id", productController.deleteProduct);
 
+router.get("/categories", productController.getAllProductCategories);
+
 module.exports = router;

@@ -1,3 +1,4 @@
+const category = require("../models/category");
 const Product = require("../models/product");
 
 // Get all products
@@ -55,6 +56,16 @@ exports.deleteProduct = async (req, res) => {
     if (!deletedProduct)
       return res.status(404).json({ message: "Product not found" });
     res.status(200).json({ message: "Product deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get all product categories
+exports.getAllProductCategories = async (req, res) => {
+  try {
+    const categories = await category.find();
+    res.status(200).json(categories[0].categories);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
