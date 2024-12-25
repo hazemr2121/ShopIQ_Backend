@@ -5,9 +5,15 @@ const productRouter = require("./routes/product-route");
 const userRouter = require("./routes/user-route");
 const orderRouter = require("./routes/order-route");
 const cors = require("cors")
+const dotenv = require("dotenv")
+
+
+dotenv.config({ path: ".env" });
+
+
 
 mongoose
-  .connect("mongodb+srv://Hazemr:1475963@cluster0.ptv3a.mongodb.net/Store", {
+  .connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
