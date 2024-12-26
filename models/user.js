@@ -21,11 +21,27 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   cart: {
-    type: Array,
+    type: [
+      {
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product"
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        }
+      },
+    ],
     default: [],
   },
   wishlist: {
-    type: Array,
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
     default: [],
   },
   orders: {
