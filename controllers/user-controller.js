@@ -109,7 +109,8 @@ exports.addToUserWishlist = async (req, res) => {
 // Get user by email
 exports.getUserByEmail = async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.params.email });
+    console.log(req.body.email)
+    const user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(404).json({ message: "User not found" });
     res.status(200).json(user);
   } catch (error) {

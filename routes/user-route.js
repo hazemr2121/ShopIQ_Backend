@@ -7,6 +7,7 @@ const {
   deleteUser,
   updateUserCart,
   updateUserWishlist,
+  getUserByEmail
 } = require("../controllers/user-controller");
 
 const router = express.Router();
@@ -15,6 +16,7 @@ const router = express.Router();
 
 // Routes
 router.get("/users", getAllUsers);
+router.get("/userByEmail" , getUserByEmail)
 router.get("/users/:id", getUserById);
 router.post("/users", createUser);
 router.put("/users/:id", updateUser);
