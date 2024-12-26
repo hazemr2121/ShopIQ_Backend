@@ -13,7 +13,7 @@ exports.getAllUsers = async (req, res) => {
 // Get user by ID
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate("wishlist cart.product");
     if (!user) return res.status(404).json({ message: "User not found" });
     res.status(200).json(user);
   } catch (error) {
@@ -116,3 +116,35 @@ exports.getUserByEmail = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+exports.updateUserCart = async (req, res) => {
+
+  try {
+    const user = await User.findById(req.params.id);
+  
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.cart.push(req.body);
+    await user.save();
+    res.status(200).json(user.cart);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
+
+exports.updateUserWishlist = async (req, res) => {
+  try {
+    const user  = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.wishlist.push(req.body.id);
+    await user.save();
+    res.status(200).json(user.wishlist);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
