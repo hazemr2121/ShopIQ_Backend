@@ -11,11 +11,19 @@ exports.getAllUsers = async (req, res) => {
 };
 
 // Get user by ID
+const mongoose = require("mongoose");
+
 exports.getUserById = async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
     const user = await User.findById(req.params.id).populate(
       "wishlist cart.product"
     );
+    console.log(user);
+    console.log(req.params.id);
     if (!user) return res.status(404).json({ message: "User not found" });
     res.status(200).json(user);
   } catch (error) {
@@ -142,11 +150,11 @@ exports.updateUserWishlist = async (req, res) => {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    if(req.body.action == "add") {
+    if (req.body.action == "add") {
       user.wishlist.push(req.body.id);
-    } 
-    if(req.body.action == "remove") {
-      user.wishlist = user.wishlist.filter(item => item != req.body.id);
+    }
+    if (req.body.action == "remove") {
+      user.wishlist = user.wishlist.filter((item) => item != req.body.id);
     }
     await user.save();
     res.status(200).json(user.wishlist);

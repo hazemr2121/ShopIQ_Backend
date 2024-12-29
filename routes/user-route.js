@@ -16,7 +16,7 @@ const router = express.Router();
 
 // Routes
 router.get("/users", getAllUsers);
-router.get("/users/:email", getUserByEmail);
+router.get("/userByEmail/:email", getUserByEmail);
 router.get("/users/:id", getUserById);
 router.post("/users", createUser);
 router.put("/users/:id", updateUser);
