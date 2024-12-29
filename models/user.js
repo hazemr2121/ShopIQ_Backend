@@ -16,22 +16,28 @@ const userSchema = new mongoose.Schema({
   },
   address: {
     type: String,
-    required: false,
+    sparse: true,
   },
   phone: {
     type: String,
+  },
+
+  role: {
+    type: String,
+    required: true,
+    default: "user",
   },
   cart: {
     type: [
       {
         product: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product"
+          ref: "Product",
         },
         quantity: {
           type: Number,
           default: 1,
-        }
+        },
       },
     ],
     default: [],

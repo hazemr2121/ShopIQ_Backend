@@ -14,7 +14,7 @@ exports.getAllProducts = async (req, res) => {
 // Get a single product by ID
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findOne({ id: req.params.id });
     if (!product) return res.status(404).json({ message: "Product not found" });
     res.status(200).json(product);
   } catch (error) {
@@ -36,8 +36,11 @@ exports.createProduct = async (req, res) => {
 // Update an existing product
 exports.updateProduct = async (req, res) => {
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
+    const productId = req.params.id;
+
+    console.log(productId);
+    const updatedProduct = await Product.findOneAndUpdate(
+      { id: req.params.id },
       req.body,
       { new: true }
     );
@@ -52,7 +55,16 @@ exports.updateProduct = async (req, res) => {
 // Delete a product
 exports.deleteProduct = async (req, res) => {
   try {
-    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+    const productId = req.params.id;
+
+    console.log(productId);
+    if (!productId) {
+      return res.status(400).json({ message: "Product ID is required" });
+    }
+
+    const deletedProduct = await Product.findOneAndDelete({
+      id: req.params.id,
+    });
     if (!deletedProduct)
       return res.status(404).json({ message: "Product not found" });
     res.status(200).json({ message: "Product deleted" });
