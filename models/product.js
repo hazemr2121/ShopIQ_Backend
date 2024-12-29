@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
+const mongooseSequence = require("mongoose-sequence");
 
 const productSchema = new mongoose.Schema({
   id: {
     type: Number,
-    required: true,
+    //required: true,
   },
   title: {
     type: String,
@@ -27,7 +28,7 @@ const productSchema = new mongoose.Schema({
   },
   rating: {
     type: Number,
-    required: true,
+    // required: true,
   },
   stock: {
     type: Number,
@@ -42,23 +43,23 @@ const productSchema = new mongoose.Schema({
     {
       rating: {
         type: Number,
-        required: true,
+        // required: true,
       },
       comment: {
         type: String,
-        required: true,
+        // required: true,
       },
       date: {
         type: Date,
-        required: true,
+        // required: true,
       },
       reviewerName: {
         type: String,
-        required: true,
+        // required: true,
       },
       reviewerEmail: {
         type: String,
-        required: true,
+        // required: true,
       },
     },
   ],
@@ -66,8 +67,13 @@ const productSchema = new mongoose.Schema({
   images: [String],
   thumbnail: {
     type: String,
-    required: true,
+    //required: true,
   },
+});
+
+productSchema.plugin(mongooseSequence(mongoose), {
+  inc_field: "id",
+  start_seq: 151,
 });
 
 const Product = mongoose.model("Product", productSchema);

@@ -4,13 +4,11 @@ const app = express();
 const productRouter = require("./routes/product-route");
 const userRouter = require("./routes/user-route");
 const orderRouter = require("./routes/order-route");
-const cors = require("cors")
-const dotenv = require("dotenv")
-
+const cors = require("cors");
+const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
 
 dotenv.config({ path: ".env" });
-
-
 
 mongoose
   .connect(process.env.MONGODB_URL, {
@@ -24,11 +22,22 @@ mongoose
     console.error("Error connecting to MongoDB:", error.message);
   });
 
-app.use(cors({
-  origin: "*",
-  credentials: true
-}))
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 app.use(express.json());
+
+app.use((req, res, next) => {
+  if (req.method !== "DELETE") {
+    bodyParser.json()(req, res, next);
+  } else {
+    next();
+  }
+});
+
 app.use("/api", productRouter);
 app.use("/api", userRouter);
 app.use("/api", orderRouter);

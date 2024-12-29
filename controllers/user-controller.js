@@ -13,7 +13,9 @@ exports.getAllUsers = async (req, res) => {
 // Get user by ID
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate("wishlist cart.product");
+    const user = await User.findById(req.params.id).populate(
+      "wishlist cart.product"
+    );
     if (!user) return res.status(404).json({ message: "User not found" });
     res.status(200).json(user);
   } catch (error) {
@@ -24,6 +26,8 @@ exports.getUserById = async (req, res) => {
 // Create new user
 exports.createUser = async (req, res) => {
   const user = new User(req.body);
+  console.log(user);
+
   try {
     const newUser = await user.save();
     res.status(201).json(newUser);
@@ -109,8 +113,9 @@ exports.addToUserWishlist = async (req, res) => {
 // Get user by email
 exports.getUserByEmail = async (req, res) => {
   try {
-    console.log(req.body.email)
-    const user = await User.findOne({ email: req.body.email });
+    console.log(req.params.email);
+
+    const user = await User.findOne({ email: req.params.email });
     if (!user) return res.status(404).json({ message: "User not found" });
     res.status(200).json(user);
   } catch (error) {
@@ -118,27 +123,23 @@ exports.getUserByEmail = async (req, res) => {
   }
 };
 
-
 exports.updateUserCart = async (req, res) => {
-
   try {
     const user = await User.findById(req.params.id);
-  
+
     if (!user) return res.status(404).json({ message: "User not found" });
 
     user.cart.push(req.body);
     await user.save();
     res.status(200).json(user.cart);
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-}
-
+};
 
 exports.updateUserWishlist = async (req, res) => {
   try {
-    const user  = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     if(req.body.action == "add") {
@@ -149,8 +150,7 @@ exports.updateUserWishlist = async (req, res) => {
     }
     await user.save();
     res.status(200).json(user.wishlist);
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-}
+};
