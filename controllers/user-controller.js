@@ -13,6 +13,7 @@ exports.getAllUsers = async (req, res) => {
 // Get user by ID
 exports.getUserById = async (req, res) => {
   try {
+    console.log(req.params.id);
     const user = await User.findById(req.params.id).populate(
       "wishlist cart.product"
     );
