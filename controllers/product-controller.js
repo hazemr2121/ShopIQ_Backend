@@ -4,8 +4,21 @@ const Product = require("../models/product");
 // Get all products
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
-    res.status(200).json(products);
+    console.log(req.query)
+    var products = await Product.find()
+    if(req.query.category){
+      products = products.filter(product => product.category === req.query.category);
+    }
+    if(req.query.rating) {
+      products = products.filter(product => Math.floor(product.rating) == req.query.rating);
+    }
+    if(req.query.priceFrom) {
+      products = products.filter(product => product.price >= req.query.priceFrom);
+    }
+    if(req.query.priceTo) {
+      products = products.filter(product => product.price <= req.query.priceTo);
+    }
+    res.status(200).json({length: products.length ,data: products});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -142,7 +142,12 @@ exports.updateUserWishlist = async (req, res) => {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    user.wishlist.push(req.body.id);
+    if(req.body.action == "add") {
+      user.wishlist.push(req.body.id);
+    } 
+    if(req.body.action == "remove") {
+      user.wishlist = user.wishlist.filter(item => item != req.body.id);
+    }
     await user.save();
     res.status(200).json(user.wishlist);
   } catch (err) {
