@@ -15,10 +15,6 @@ const mongoose = require("mongoose");
 
 exports.getUserById = async (req, res) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ message: "Invalid user ID" });
-    }
-
     const user = await User.findById(req.params.id).populate(
       "wishlist cart.product"
     );
