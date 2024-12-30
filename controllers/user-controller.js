@@ -119,7 +119,9 @@ exports.getUserByEmail = async (req, res) => {
   try {
     console.log(req.params.email);
 
-    const user = await User.findOne({ email: req.params.email });
+    const user = await User.findOne({ email: req.params.email }).populate(
+      "wishlist cart.product orders.products.product"
+    );
     if (!user) return res.status(404).json({ message: "User not found" });
     res.status(200).json(user);
   } catch (error) {
