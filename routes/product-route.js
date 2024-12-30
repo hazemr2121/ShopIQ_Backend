@@ -20,4 +20,6 @@ router.delete("/products/:id", productController.deleteProduct);
 
 router.get("/categories", productController.getAllProductCategories);
 
+router.get("/search/products", productController.searchProducts);
+
 module.exports = router;
