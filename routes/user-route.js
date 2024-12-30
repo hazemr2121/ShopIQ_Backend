@@ -8,6 +8,7 @@ const {
   updateUserCart,
   updateUserWishlist,
   getUserByEmail,
+  updateUserOrders,
 } = require("../controllers/user-controller");
 
 const router = express.Router();
@@ -23,5 +24,6 @@ router.put("/users/:id", updateUser);
 router.delete("/users/:id", deleteUser);
 router.put("/users/:id/cart", updateUserCart);
 router.put("/users/:id/wishlist", updateUserWishlist);
+router.put("/users/:id/orders", updateUserOrders);
 
 module.exports = router;

@@ -4,8 +4,9 @@ const Order = require("../models/order");
 exports.createOrder = async (req, res) => {
   try {
     const newOrder = new Order(req.body);
-    const savedOrder = await newOrder.save();
-    res.status(201).json(savedOrder);
+    await newOrder.save();
+
+    return res.status(201).json(newOrder);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -14,7 +15,7 @@ exports.createOrder = async (req, res) => {
 // Get all orders
 exports.getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().populate("products.product user");
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -16,7 +16,7 @@ const mongoose = require("mongoose");
 exports.getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate(
-      "wishlist cart.product"
+      "wishlist cart.product orders.products.product"
     );
     console.log(user);
     console.log(req.params.id);
@@ -154,6 +154,21 @@ exports.updateUserWishlist = async (req, res) => {
     }
     await user.save();
     res.status(200).json(user.wishlist);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.updateUserOrders = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    console.log(user.orders);
+    user.orders.push(req.body);
+    await user.save();
+    return res.status(200).json(user.orders);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
