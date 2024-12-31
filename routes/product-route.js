@@ -9,6 +9,8 @@ router.get("/products", productController.getAllProducts);
 // Get a single product by ID
 router.get("/products/:id", productController.getProductById);
 
+router.get("/product/:id", productController.getProductById1);
+
 // Create a new product
 router.post("/products/", productController.createProduct);
 

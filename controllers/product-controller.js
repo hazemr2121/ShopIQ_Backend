@@ -36,9 +36,20 @@ exports.getAllProducts = async (req, res) => {
 };
 
 // Get a single product by ID
-exports.getProductById = async (req, res) => {
+exports.getProductById1 = async (req, res) => {
   try {
     const product = await Product.findOne({ id: req.params.id });
+    console.log(product);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
     console.log(product);
     if (!product) return res.status(404).json({ message: "Product not found" });
     res.status(200).json(product);
@@ -119,8 +130,8 @@ exports.searchProducts = async (req, res) => {
     return res.status(200).json(products);
   } catch (err) {
     console.error(err);
-}
-}
+  }
+};
 
 exports.addProductReview = async (req, res) => {
   try {
@@ -134,4 +145,4 @@ exports.addProductReview = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-}
+};
