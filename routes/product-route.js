@@ -21,5 +21,6 @@ router.delete("/products/:id", productController.deleteProduct);
 router.get("/categories", productController.getAllProductCategories);
 
 router.get("/search/products", productController.searchProducts);
+router.put("/products/:id/reviews", productController.addProductReview);
 
 module.exports = router;
