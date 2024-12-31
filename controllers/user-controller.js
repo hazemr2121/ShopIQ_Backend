@@ -135,7 +135,38 @@ exports.updateUserCart = async (req, res) => {
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    user.cart.push(req.body);
+    if (req.body.action == "plus") {
+      const item = user.cart.find((item) => item.product == req.body.product);
+      item.quantity++;
+    }
+    if (req.body.action == "minus") {
+      const item = user.cart.find((item) => item.product == req.body.product);
+      if (item.quantity == 1) {
+        user.cart = user.cart.filter(
+          (item) => item.product != req.body.product
+        );
+      } else {
+        item.quantity--;
+      }
+    }
+    if (req.body.action != "plus" && req.body.action != "minus") {
+      user.cart.push(req.body);
+    }
+    await user.save();
+    res.status(200).json(user.cart);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+// delete from cart
+
+exports.deleteFromCart = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.cart = user.cart.filter((item) => item.product != req.body.id);
     await user.save();
     res.status(200).json(user.cart);
   } catch (err) {
