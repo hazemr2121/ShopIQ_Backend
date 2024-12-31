@@ -39,11 +39,13 @@ exports.getOrderById = async (req, res) => {
 exports.updateOrderById = async (req, res) => {
   try {
     const updatedOrder = await Order.findById(req.params.orderId);
+    console.log(updatedOrder);
     if (!updatedOrder) {
       return res.status(404).json({ message: "Order not found" });
     }
     updatedOrder.status = req.body.status;
     await updatedOrder.save();
+
     return res.status(200).json(updatedOrder);
   } catch (error) {
     res.status(400).json({ message: error.message });

@@ -4,24 +4,32 @@ const Product = require("../models/product");
 // Get all products
 exports.getAllProducts = async (req, res) => {
   try {
-    console.log(req.query)
-    var products = await Product.find()
+    console.log(req.query);
+    var products = await Product.find();
     // if(req.query.page) {
     //   products = products.slice((req.query.page - 1) * 9, req.query.page * 9);
     // }
-    if(req.query.category){
-      products = products.filter(product => product.category === req.query.category);
+    if (req.query.category) {
+      products = products.filter(
+        (product) => product.category === req.query.category
+      );
     }
-    if(req.query.rating) {
-      products = products.filter(product => Math.floor(product.rating) == req.query.rating);
+    if (req.query.rating) {
+      products = products.filter(
+        (product) => Math.floor(product.rating) == req.query.rating
+      );
     }
-    if(req.query.priceFrom) {
-      products = products.filter(product => product.price >= req.query.priceFrom);
+    if (req.query.priceFrom) {
+      products = products.filter(
+        (product) => product.price >= req.query.priceFrom
+      );
     }
-    if(req.query.priceTo) {
-      products = products.filter(product => product.price <= req.query.priceTo);
+    if (req.query.priceTo) {
+      products = products.filter(
+        (product) => product.price <= req.query.priceTo
+      );
     }
-    res.status(200).json({length: products.length ,data: products});
+    res.status(200).json({ length: products.length, data: products });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -30,7 +38,8 @@ exports.getAllProducts = async (req, res) => {
 // Get a single product by ID
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findOne({ id: req.params.id });
+    console.log(product);
     if (!product) return res.status(404).json({ message: "Product not found" });
     res.status(200).json(product);
   } catch (error) {
@@ -99,16 +108,16 @@ exports.getAllProductCategories = async (req, res) => {
   }
 };
 
-
 exports.searchProducts = async (req, res) => {
   try {
-    console.log(req.query)
+    console.log(req.query);
     const products = await Product.find({
-        title: { $regex: req.query.title, $options: 'i' } // Case-insensitive search
-    }).select('thumbnail title price');
-    if(! products)return res.status(404).json({ message: "Product not found" });
+      title: { $regex: req.query.title, $options: "i" }, // Case-insensitive search
+    }).select("thumbnail title price");
+    if (!products)
+      return res.status(404).json({ message: "Product not found" });
     return res.status(200).json(products);
-} catch (err) {
+  } catch (err) {
     console.error(err);
-}
-}
+  }
+};
